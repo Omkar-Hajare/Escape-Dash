@@ -47,18 +47,14 @@ const GameOverModal = ({ gameData, difficulty, onPlayAgain, onGoHome }) => {
             </span>
           </div>
           
-          <div className="save-message">
-            ✓ Score saved to leaderboard!
-          </div>
+          
         </div>
         
         <div className="modal-buttons">
           <button className="btn play-again-btn" onClick={onPlayAgain}>
             Play Again
           </button>
-          <button className="btn leaderboard-btn">
-            View Leaderboard
-          </button>
+  
           <button className="btn main-menu-btn" onClick={onGoHome}>
             Main Menu
           </button>

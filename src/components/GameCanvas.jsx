@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { initializeSprites } from '../utils/sprites';
 import { DIFFICULTY_SETTINGS } from '../utils/gameConfig';
 
-const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => {
+const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onCoinCollect, onGameOver }) => {
   const canvasRef = useRef(null);
   const gameStateRef = useRef({
     gameRunning: false,
@@ -16,7 +16,7 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
     particles: [],
     lanes: [],
     lastObstacleTime: 0,
-    minObstacleGap: 120,
+    minObstacleGap: 100,
     lastObstacleLanes: [],
     keys: {},
     startTime: Date.now(),
@@ -128,9 +128,9 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
   // Game Functions
   const checkCollision = (rect1, rect2) => {
     return rect1.x < rect2.x + rect2.width &&
-           rect1.x + rect1.width > rect2.x &&
-           rect1.y < rect2.y + rect2.height &&
-           rect1.y + rect1.height > rect2.y;
+      rect1.x + rect1.width > rect2.x &&
+      rect1.y < rect2.y + rect2.height &&
+      rect1.y + rect1.height > rect2.y;
   };
 
   const handleInput = () => {
@@ -170,30 +170,18 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
     const gameState = gameStateRef.current;
     const settings = DIFFICULTY_SETTINGS[difficulty];
     const currentTime = Date.now();
-    
+
     if (currentTime - gameState.lastObstacleTime < gameState.minObstacleGap) {
       return;
     }
-    
+
     if (Math.random() < settings.obstacleSpawnRate + gameState.score * 0.00002) {
-      const numObstacles = Math.random() < 0.7 ? 1 : 2;
-      
-      if (numObstacles === 1) {
-        const availableLanes = [0, 1, 2];
-        const selectedLane = availableLanes[Math.floor(Math.random() * availableLanes.length)];
-        gameState.obstacles.push(new Obstacle(selectedLane));
-        gameState.lastObstacleLanes = [selectedLane];
-      } else {
-        const availableLanes = [0, 1, 2];
-        const firstLane = availableLanes[Math.floor(Math.random() * availableLanes.length)];
-        availableLanes.splice(availableLanes.indexOf(firstLane), 1);
-        const secondLane = availableLanes[Math.floor(Math.random() * availableLanes.length)];
-        
-        gameState.obstacles.push(new Obstacle(firstLane));
-        gameState.obstacles.push(new Obstacle(secondLane));
-        gameState.lastObstacleLanes = [firstLane, secondLane];
-      }
-      
+      // Always spawn only 1 obstacle to ensure at least 2 lanes are free
+      const availableLanes = [0, 1, 2];
+      const selectedLane = availableLanes[Math.floor(Math.random() * availableLanes.length)];
+      gameState.obstacles.push(new Obstacle(selectedLane));
+      gameState.lastObstacleLanes = [selectedLane];
+
       gameState.lastObstacleTime = currentTime;
     }
   };
@@ -220,10 +208,10 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
   const updateObstacles = () => {
     const gameState = gameStateRef.current;
     const canvas = canvasRef.current;
-    
+
     for (let i = gameState.obstacles.length - 1; i >= 0; i--) {
       gameState.obstacles[i].update();
-      
+
       if (gameState.obstacles[i].y > canvas.height) {
         gameState.obstacles.splice(i, 1);
         continue;
@@ -232,8 +220,8 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
       if (checkCollision(gameState.player, gameState.obstacles[i])) {
         for (let j = 0; j < 15; j++) {
           gameState.particles.push(new Particle(
-            gameState.player.x + gameState.player.width/2,
-            gameState.player.y + gameState.player.height/2,
+            gameState.player.x + gameState.player.width / 2,
+            gameState.player.y + gameState.player.height / 2,
             ['#FF4444', '#FF8800', '#FFAA00'][Math.floor(Math.random() * 3)]
           ));
         }
@@ -246,10 +234,10 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
   const updateCoins = () => {
     const gameState = gameStateRef.current;
     const canvas = canvasRef.current;
-    
+
     for (let i = gameState.coins.length - 1; i >= 0; i--) {
       gameState.coins[i].update();
-      
+
       if (gameState.coins[i].y > canvas.height) {
         gameState.coins.splice(i, 1);
         continue;
@@ -258,14 +246,16 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
       if (checkCollision(gameState.player, gameState.coins[i])) {
         for (let j = 0; j < 12; j++) {
           gameState.particles.push(new Particle(
-            gameState.coins[i].x + gameState.coins[i].width/2,
-            gameState.coins[i].y + gameState.coins[i].height/2,
+            gameState.coins[i].x + gameState.coins[i].width / 2,
+            gameState.coins[i].y + gameState.coins[i].height / 2,
             ['#FFD700', '#FFA500', '#FFFF00'][Math.floor(Math.random() * 3)]
           ));
         }
-        
+
         gameState.score += 10;
         onScoreUpdate(gameState.score);
+        // Add this line:
+        if (onCoinCollect) onCoinCollect();
         gameState.coins.splice(i, 1);
       }
     }
@@ -274,7 +264,7 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
   const updateBackgroundElements = () => {
     const gameState = gameStateRef.current;
     const canvas = canvasRef.current;
-    
+
     for (let i = gameState.backgroundElements.length - 1; i >= 0; i--) {
       gameState.backgroundElements[i].update();
       if (gameState.backgroundElements[i].y > canvas.height) {
@@ -285,7 +275,7 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
 
   const updateParticles = () => {
     const gameState = gameStateRef.current;
-    
+
     for (let i = gameState.particles.length - 1; i >= 0; i--) {
       gameState.particles[i].update();
       if (gameState.particles[i].life <= 0) {
@@ -298,7 +288,7 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
     const gameState = gameStateRef.current;
     const sprites = gameState.sprites;
     const player = gameState.player;
-    
+
     if (sprites['player']) {
       ctx.drawImage(sprites['player'], player.x, player.y, player.width, player.height);
     }
@@ -308,37 +298,37 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
     const gameState = gameStateRef.current;
     const canvas = canvasRef.current;
     const lanes = gameState.lanes;
-    
+
     // Road base
     ctx.fillStyle = '#1a1a2e';
     ctx.fillRect(lanes[0] - 90, 0, 480, canvas.height);
-    
+
     // Sidewalks
     ctx.fillStyle = '#16213e';
     ctx.fillRect(0, 0, lanes[0] - 90, canvas.height);
     ctx.fillRect(lanes[2] + 90, 0, canvas.width - (lanes[2] + 90), canvas.height);
-    
+
     // Road lines
     ctx.strokeStyle = '#00ffff';
     ctx.lineWidth = 4;
     ctx.setLineDash([30, 30]);
-    
+
     gameState.roadOffset += gameState.gameSpeed;
     if (gameState.roadOffset > 60) gameState.roadOffset = 0;
-    
+
     ctx.save();
     ctx.translate(0, gameState.roadOffset);
-    
+
     for (let i = 0; i < 2; i++) {
       ctx.beginPath();
       ctx.moveTo(lanes[i] + 75, -60);
       ctx.lineTo(lanes[i] + 75, canvas.height + 60);
       ctx.stroke();
     }
-    
+
     ctx.restore();
     ctx.setLineDash([]);
-    
+
     // Road edges
     ctx.strokeStyle = '#00ffff';
     ctx.lineWidth = 6;
@@ -353,20 +343,20 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
   const draw = (ctx) => {
     const gameState = gameStateRef.current;
     const canvas = canvasRef.current;
-    
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     // Dark space background
     ctx.fillStyle = '#0f3460';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     drawRoad(ctx);
-    
+
     gameState.backgroundElements.forEach(element => element.draw(ctx));
     gameState.obstacles.forEach(obstacle => obstacle.draw(ctx));
     gameState.coins.forEach(coin => coin.draw(ctx));
     gameState.particles.forEach(particle => particle.draw(ctx));
-    
+
     drawPlayer(ctx);
   };
 
@@ -386,7 +376,7 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
 
     const settings = DIFFICULTY_SETTINGS[difficulty];
     gameState.gameSpeed += settings.speedIncrement;
-    
+
     gameState.score++;
     onScoreUpdate(gameState.score);
 
@@ -405,7 +395,7 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
   const gameLoop = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     updateGame();
     draw(ctx);
@@ -422,11 +412,11 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
 
     // Initialize sprites
     const sprites = initializeSprites();
-    
+
     // Initialize game state
     const gameState = gameStateRef.current;
     const settings = DIFFICULTY_SETTINGS[difficulty];
-    
+
     gameState.sprites = sprites;
     gameState.gameRunning = true;
     gameState.score = 0;
@@ -438,8 +428,8 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
     gameState.roadOffset = 0;
     gameState.lastObstacleTime = 0;
     gameState.lastObstacleLanes = [];
-    gameState.minObstacleGap = difficulty === 'simple' ? 150 : 
-                               difficulty === 'moderate' ? 120 : 100;
+    gameState.minObstacleGap = difficulty === 'simple' ? 150 :
+      difficulty === 'moderate' ? 120 : 100;
     gameState.startTime = Date.now();
 
     gameState.lanes = [canvas.width / 2 - 150, canvas.width / 2, canvas.width / 2 + 150];
@@ -482,9 +472,9 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onGameOver }) => 
   }, [difficulty]); // Re-run when difficulty changes or component remounts
 
   return (
-    <canvas 
-      ref={canvasRef} 
-      width={1200} 
+    <canvas
+      ref={canvasRef}
+      width={1200}
       height={600}
       className="game-canvas"
     />

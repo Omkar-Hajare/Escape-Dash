@@ -5,11 +5,16 @@ import '../styles/GamePage.css';
 const GamePage = ({ difficulty, onGameOver, onGoHome }) => {
   const [score, setScore] = useState(0);
   const [time, setTime] = useState(0);
+  const [coins, setCoins] = useState(0);
 
   const difficultyNames = {
     simple: 'SIMPLE',
     moderate: 'MODERATE', 
     hard: 'HARD'
+  };
+
+  const handleCoinCollect = () => {
+    setCoins(prev => prev + 1);
   };
 
   return (
@@ -31,6 +36,10 @@ const GamePage = ({ difficulty, onGameOver, onGoHome }) => {
             <span className="stat-value score-value">{score}</span>
           </div>
           <div className="stat-item">
+            <span className="stat-label">Coins:</span>
+            <span className="stat-value coin-value">🪙 {coins}</span>
+          </div>
+          <div className="stat-item">
             <span className="stat-label">Time:</span>
             <span className="stat-value time-value">{time}</span>
           </div>
@@ -40,12 +49,15 @@ const GamePage = ({ difficulty, onGameOver, onGoHome }) => {
           </div>
         </div>
 
-        <GameCanvas 
-          difficulty={difficulty}
-          onScoreUpdate={setScore}
-          onTimeUpdate={setTime}
-          onGameOver={onGameOver}
-        />
+        <div className="game-canvas-container">
+          <GameCanvas 
+            difficulty={difficulty}
+            onScoreUpdate={setScore}
+            onTimeUpdate={setTime}
+            onCoinCollect={handleCoinCollect}
+            onGameOver={onGameOver}
+          />
+        </div>
       </div>
     </div>
   );

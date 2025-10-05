@@ -137,6 +137,12 @@
   animation: pulse 2s ease-in-out infinite;
 }
 
+.coin-value {
+  color: #FFD700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  font-size: 1.8em;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.8; }
@@ -156,9 +162,9 @@
 .game-canvas-container {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 15px;
+  padding: 20px;
 }
 
 .game-canvas {
@@ -171,6 +177,7 @@
   max-width: 100%;
   height: auto;
   transition: all 0.3s ease;
+  display: block;
 }
 
 .game-canvas:hover {

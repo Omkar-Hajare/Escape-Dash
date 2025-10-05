@@ -1,17 +1,15 @@
-import '../styles/HomePage.css';
 import { useState } from 'react';
+import '../styles/HomePage.css';
 
 const HomePage = ({ onStartGame }) => {
   const [selectedDifficulty, setSelectedDifficulty] = useState('simple');
 
-  const handleSelectDifficulty = (difficulty) => {
+  const handleDifficultySelect = (difficulty) => {
     setSelectedDifficulty(difficulty);
   };
 
   const handleStartGame = () => {
-    if (onStartGame && selectedDifficulty) {
-      onStartGame(selectedDifficulty);
-    }
+    onStartGame(selectedDifficulty);
   };
 
   return (
@@ -28,27 +26,27 @@ const HomePage = ({ onStartGame }) => {
           
           <div className="difficulty-options">
             <button 
-              className={`difficulty-btn simple-mode${selectedDifficulty === 'simple' ? ' selected' : ''}`}
-              onClick={() => handleSelectDifficulty('simple')}
+              className={`difficulty-btn simple-mode ${selectedDifficulty === 'simple' ? 'selected' : ''}`}
+              onClick={() => handleDifficultySelect('simple')}
             >
               <div className="difficulty-name">Simple Mode</div>
-              <div className="difficulty-desc">Fewer obstacles, slower pace, 90 seconds</div>
+              <div className="difficulty-desc">Fewer obstacles, slower pace</div>
             </button>
             
             <button 
-              className={`difficulty-btn moderate-mode${selectedDifficulty === 'moderate' ? ' selected' : ''}`}
-              onClick={() => handleSelectDifficulty('moderate')}
+              className={`difficulty-btn moderate-mode ${selectedDifficulty === 'moderate' ? 'selected' : ''}`}
+              onClick={() => handleDifficultySelect('moderate')}
             >
               <div className="difficulty-name">Moderate Mode</div>
-              <div className="difficulty-desc">Balanced challenge, medium pace, 60 seconds</div>
+              <div className="difficulty-desc">Balanced challenge, medium pace</div>
             </button>
             
             <button 
-              className={`difficulty-btn hard-mode${selectedDifficulty === 'hard' ? ' selected' : ''}`}
-              onClick={() => handleSelectDifficulty('hard')}
+              className={`difficulty-btn hard-mode ${selectedDifficulty === 'hard' ? 'selected' : ''}`}
+              onClick={() => handleDifficultySelect('hard')}
             >
               <div className="difficulty-name">Hard Mode</div>
-              <div className="difficulty-desc">Many obstacles, fast pace, 45 seconds</div>
+              <div className="difficulty-desc">Many obstacles, fast pace</div>
             </button>
           </div>
           
