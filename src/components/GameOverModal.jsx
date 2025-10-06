@@ -19,10 +19,7 @@ const GameOverModal = ({ gameData, difficulty, onPlayAgain, onGoHome }) => {
         <h2 className="final-results-title">Final Results</h2>
         
         <div className="results-content">
-          <div className="result-section">
-            <span className="result-label">Player</span>
-            <span className="result-value player-name">Player</span>
-          </div>
+         
           
           <div className="result-section">
             <span className="result-label">Difficulty</span>

@@ -361,29 +361,32 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onCoinCollect, on
   };
 
   const updateGame = () => {
-    const gameState = gameStateRef.current;
-    if (!gameState.gameRunning) return;
+  const gameState = gameStateRef.current;
+  if (!gameState.gameRunning) return;
 
-    handleInput();
-    updatePlayer();
-    spawnObstacle();
-    spawnCoin();
-    spawnBackgroundElement();
-    updateObstacles();
-    updateCoins();
-    updateBackgroundElements();
-    updateParticles();
+  handleInput();
+  updatePlayer();
+  spawnObstacle();
+  spawnCoin();
+  spawnBackgroundElement();
+  updateObstacles();
+  updateCoins();
+  updateBackgroundElements();
+  updateParticles();
 
-    const settings = DIFFICULTY_SETTINGS[difficulty];
-    gameState.gameSpeed += settings.speedIncrement;
-
+  const settings = DIFFICULTY_SETTINGS[difficulty];
+  gameState.gameSpeed += settings.speedIncrement;
+  
+  // Score increases every 10 frames instead of every frame
+  gameState.frameCount = (gameState.frameCount || 0) + 1;
+  if (gameState.frameCount % 10 === 0) {
     gameState.score++;
     onScoreUpdate(gameState.score);
+  }
 
-    // Update time
-    const currentTime = Math.floor((Date.now() - gameState.startTime) / 1000);
-    onTimeUpdate(currentTime);
-  };
+  const currentTime = Math.floor((Date.now() - gameState.startTime) / 1000);
+  onTimeUpdate(currentTime);
+};
 
   const handleGameOver = () => {
     const gameState = gameStateRef.current;
