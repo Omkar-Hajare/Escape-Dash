@@ -388,12 +388,12 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onCoinCollect, on
   onTimeUpdate(currentTime);
 };
 
-  const handleGameOver = () => {
-    const gameState = gameStateRef.current;
-    gameState.gameRunning = false;
-    const finalTime = Math.floor((Date.now() - gameState.startTime) / 1000);
-    onGameOver(gameState.score, finalTime);
-  };
+ const handleGameOver = () => {
+  const gameState = gameStateRef.current;
+  gameState.gameRunning = false;
+  const finalTime = Math.floor((Date.now() - gameState.startTime) / 1000);
+  onGameOver(gameState.score, finalTime);
+};
 
   const gameLoop = () => {
     const canvas = canvasRef.current;
