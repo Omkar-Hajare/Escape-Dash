@@ -37,6 +37,7 @@
   max-width: 600px;
   width: 100%;
   text-align: center;
+  
 }
 
 /* ===== GAME TITLE ===== */
@@ -46,7 +47,7 @@
   color: #00ffff;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   text-shadow: 
     0 0 10px rgba(0, 255, 255, 0.8),
     0 0 20px rgba(0, 255, 255, 0.6),
@@ -75,7 +76,7 @@
   font-size: 1.1em;
   color: #a0a0b0;
   line-height: 1.6;
-  margin-bottom: 50px;
+  margin-bottom: 29px;
   font-weight: 300;
 }
 

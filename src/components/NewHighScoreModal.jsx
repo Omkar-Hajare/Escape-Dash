@@ -9,7 +9,7 @@ const NewHighScoreModal = ({ score, onClose }) => {
         <div className="new-score-value">{score}</div>
         <p className="congratulations-text">Congratulations! You've set a new record!</p>
         <button className="btn close-btn" onClick={onClose}>
-          Awesome!
+          Dismiss!
         </button>
       </div>
     </div>

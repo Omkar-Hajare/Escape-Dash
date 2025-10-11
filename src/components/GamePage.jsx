@@ -13,6 +13,11 @@ const GamePage = ({ difficulty, onGameOver, onGoHome }) => {
     hard: 'HARD'
   };
 
+  const handleGameOver = (finalScore, finalTime) => {
+  console.log('Game Over - Score:', finalScore, 'Coins:', coins, 'Time:', finalTime);
+  onGameOver(finalScore, coins, finalTime);
+};
+
   const handleCoinCollect = () => {
     setCoins(prev => prev + 1);
   };

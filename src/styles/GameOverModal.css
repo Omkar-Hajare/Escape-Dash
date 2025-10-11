@@ -12,6 +12,7 @@
   z-index: 2000;
   backdrop-filter: blur(8px);
   animation: fadeIn 0.4s ease-out;
+  
 }
 
 @keyframes fadeIn {
@@ -26,16 +27,19 @@
 /* ===== MODAL CONTAINER ===== */
 .game-over-modal {
   background: rgba(26, 26, 46, 0.95);
-  border: 3px solid rgba(0, 255, 255, 0.5);
+  border: 2px solid rgba(0, 255, 255, 0.5);
   border-radius: 25px;
-  padding: 50px 40px;
-  max-width: 600px;
+  padding: 40px 35px;
+  max-width: 650px;
   width: 90%;
+  max-height: 95vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
   box-shadow: 
     0 0 50px rgba(0, 255, 255, 0.4),
     0 20px 60px rgba(0, 0, 0, 0.6);
   animation: modalSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
+  /* position: relative; */
   overflow: hidden;
 }
 
@@ -96,8 +100,41 @@
 .results-content {
   position: relative;
   z-index: 1;
-  margin-bottom: 35px;
+  margin-bottom: 30px;
 }
+
+.result-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.result-section.full-width {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  background: rgba(15, 52, 96, 0.3);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.result-section.half-width {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 15px;
+  background: rgba(15, 52, 96, 0.3);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
 
 .result-section {
   display: flex;
@@ -115,29 +152,27 @@
 .result-section:hover {
   background: rgba(15, 52, 96, 0.5);
   border-color: rgba(0, 255, 255, 0.4);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+
 .result-label {
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: #808090;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
+  text-align: center;
 }
 
 .result-value {
   font-size: 2em;
   font-weight: 700;
   line-height: 1.2;
+  text-align: center;
 }
 
-/* Player Name */
-.player-name {
-  color: #00ffff;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
-}
 
 /* Difficulty Name */
 .difficulty-name {
@@ -145,16 +180,16 @@
   text-shadow: 0 0 10px rgba(199, 125, 255, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-size: 1.8em;
 }
 
 /* Final Score */
 .final-score {
   color: #00ffff;
-  font-size: 3em;
   text-shadow: 
     0 0 20px rgba(0, 255, 255, 0.8),
     0 0 40px rgba(0, 255, 255, 0.5);
-  animation: scoreGlow 1.5s ease-in-out infinite alternate;
+  font-size: 2.2em;
 }
 
 @keyframes scoreGlow {
@@ -175,7 +210,7 @@
 .time-played {
   color: #ff6b6b;
   font-family: 'Courier New', monospace;
-  font-size: 2.5em;
+  font-size: 2em;
 }
 
 /* ===== MOTIVATIONAL TEXT ===== */
@@ -204,19 +239,7 @@
   }
 }
 
-/* ===== SAVE MESSAGE ===== */
-.save-message {
-  text-align: center;
-  color: #00ff00;
-  font-size: 1em;
-  font-weight: 600;
-  padding: 12px 20px;
-  background: rgba(0, 255, 0, 0.1);
-  border: 1px solid rgba(0, 255, 0, 0.3);
-  border-radius: 8px;
-  margin-top: 15px;
-  animation: saveMessageSlide 0.6s ease-out 0.5s both;
-}
+
 
 @keyframes saveMessageSlide {
   from {
@@ -287,21 +310,8 @@
   transform: translateY(-1px);
 }
 
-/* Leaderboard Button */
-.leaderboard-btn {
-  color: #0a0e27;
-  background: linear-gradient(135deg, #c77dff 0%, #9d4edd 100%);
-  box-shadow: 0 5px 15px rgba(199, 125, 255, 0.4);
-}
 
-.leaderboard-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(199, 125, 255, 0.6);
-}
 
-.leaderboard-btn:active {
-  transform: translateY(-1px);
-}
 
 /* Main Menu Button */
 .main-menu-btn {
@@ -322,14 +332,37 @@
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-  .game-over-modal {
-    padding: 40px 30px;
-    width: 95%;
-  }
+ 
 
   .final-results-title {
     font-size: 2em;
     margin-bottom: 25px;
+  }
+
+   .game-over-modal {
+    padding: 30px 25px;
+    max-width: 95%;
+  }
+
+   .result-section.half-width {
+    width: 100%;
+  }
+
+  .result-section.compact {
+    padding: 10px 15px;
+  }
+
+  .result-section.compact .result-value {
+    font-size: 1.4em;
+  }
+
+    .motivational-text {
+    font-size: 1.2em;
+  }
+
+   .result-row {
+    flex-direction: column;
+    gap: 10px;
   }
 
   .result-section {
@@ -337,20 +370,17 @@
   }
 
   .result-value {
-    font-size: 1.8em;
+    font-size: 1.6em;
   }
 
   .final-score {
-    font-size: 2.5em;
+    font-size: 1.8em;
   }
 
   .time-played {
     font-size: 2em;
   }
 
-  .motivational-text {
-    font-size: 1.4em;
-  }
 
   .modal-buttons {
     flex-direction: column;
@@ -380,15 +410,16 @@
   }
 
   .result-label {
-    font-size: 0.8em;
+    font-size: 0.75em;
   }
 
   .result-value {
-    font-size: 1.5em;
+    font-size: 1.4em;
   }
 
-  .final-score {
-    font-size: 2em;
+  .final-score,
+  .highscore-display {
+    font-size: 1.6em;
   }
 
   .time-played {
@@ -523,3 +554,82 @@
     display: none;
   }
 }
+/* Make boxes more compact */
+.result-section.compact {
+  padding: 12px 20px;
+  margin-bottom: 10px;
+}
+
+.result-section.compact .result-label {
+  font-size: 0.85em;
+  
+}
+
+.result-section.compact .result-value {
+  font-size: 1.6em;
+}
+
+/* Highlight sections for high score and total coins */
+.result-section.highlight {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.15));
+  border: 2px solid rgba(255, 215, 0, 0.4);
+}
+
+.result-section.highlight:hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 165, 0, 0.25));
+  border-color: rgba(255, 215, 0, 0.6);
+  transform: translateY(-2px) scale(1.02);
+}
+
+
+/* High Score styling */
+.highscore-display {
+  color: #FFD700;
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.8),
+    0 0 20px rgba(255, 215, 0, 0.5);
+  font-size: 2.2em;
+  animation: scoreGlow 1.5s ease-in-out infinite alternate;
+}
+
+/* Total Coins styling */
+.totalcoins-display {
+  color: #FFA500;
+  text-shadow: 
+    0 0 10px rgba(255, 165, 0, 0.8),
+    0 0 20px rgba(255, 165, 0, 0.5);
+  font-size: 2em;
+}
+
+/* Coins collected this game */
+.coins-collected {
+  color: #FFD700;
+  font-size: 2em;
+}
+
+/* Reduce motivational text size */
+.motivational-text {
+  font-size: 1.4em;
+  margin: 15px 0;
+  padding: 10px;
+}
+
+/* Make modal more compact */
+.game-over-modal {
+  padding: 40px 35px;
+  max-height: 95vh;
+  overflow-y: auto;
+}
+
+.results-content {
+  margin-bottom: 25px;
+}
+
+/* Reduce save message size */
+.save-message {
+  font-size: 0.9em;
+  padding: 10px 15px;
+  margin-top: 10px;
+}
+
+

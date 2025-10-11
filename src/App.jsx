@@ -58,7 +58,7 @@ function App() {
 
     // Update stats in database
     const result = await gameStatsAPI.updateStats(difficulty, score, coins);
-    
+
     if (result && result.isNewHighScore) {
       setNewHighScoreValue(score);
       setShowNewHighScore(true);
@@ -87,9 +87,9 @@ function App() {
       {currentPage === 'home' && (
         <HomePage onStartGame={startGame} currentStats={currentStats} />
       )}
-      
+
       {currentPage === 'game' && (
-        <GamePage 
+        <GamePage
           key={gameKey}
           difficulty={difficulty}
           onGameOver={handleGameOver}
@@ -111,7 +111,7 @@ function App() {
           difficulty={difficulty}
           onPlayAgain={playAgain}
           onGoHome={goHome}
-          currentStats={currentStats}
+          currentStats={currentStats}  // Make sure this is here
         />
       )}
     </div>
