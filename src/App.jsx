@@ -12,7 +12,7 @@ function App() {
   const [gameData, setGameData] = useState({
     score: 0,
     coins: 0,
-    timePlayerd: 0,
+    timePlayed: 0,
     finalScore: 0
   });
   const [showGameOver, setShowGameOver] = useState(false);
@@ -37,7 +37,7 @@ function App() {
     setDifficulty(selectedDifficulty);
     setCurrentPage('game');
     setShowGameOver(false);
-    setGameData({ score: 0, coins: 0, timePlayerd: 0, finalScore: 0 });
+    setGameData({ score: 0, coins: 0, timePlayed: 0, finalScore: 0 });
     setGameKey(prev => prev + 1);
   };
 
@@ -48,11 +48,14 @@ function App() {
     setGameKey(prev => prev + 1);
   };
 
+  // ✅ FIX: Properly handle all three parameters
   const handleGameOver = async (score, coins, time) => {
+    console.log('App - Game Over received:', { score, coins, time });
+    
     setGameData({
       score,
       coins,
-      timePlayerd: time,
+      timePlayed: time,  // ✅ Fixed typo
       finalScore: score
     });
 
@@ -78,7 +81,7 @@ function App() {
   const playAgain = () => {
     setShowGameOver(false);
     setShowNewHighScore(false);
-    setGameData({ score: 0, coins: 0, timePlayerd: 0, finalScore: 0 });
+    setGameData({ score: 0, coins: 0, timePlayed: 0, finalScore: 0 });
     setGameKey(prev => prev + 1);
   };
 
@@ -111,7 +114,7 @@ function App() {
           difficulty={difficulty}
           onPlayAgain={playAgain}
           onGoHome={goHome}
-          currentStats={currentStats}  // Make sure this is here
+          currentStats={currentStats}
         />
       )}
     </div>

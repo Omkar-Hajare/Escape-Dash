@@ -16,6 +16,9 @@ const GameOverModal = ({ gameData, difficulty, onPlayAgain, onGoHome, currentSta
     hard: 'HARD MODE'
   };
 
+  // ✅ Add debug logging
+  console.log('GameOverModal - gameData:', gameData);
+
   return (
     <div className="game-over-overlay">
       <div className="game-over-modal">
@@ -64,17 +67,15 @@ const GameOverModal = ({ gameData, difficulty, onPlayAgain, onGoHome, currentSta
             </div>
           </div>
 
-          {/* Time Played */}
+          {/* Time Played - ✅ FIXED TYPO */}
           <div className="result-section full-width">
             <span className="result-label">Time Played</span>
             <span className="result-value time-played">
-              {formatTime(gameData.timePlayerd)}
+              {formatTime(gameData.timePlayed)}
             </span>
           </div>
 
           <div className="motivational-text">KEEP TRYING!</div>
-          
-        
         </div>
         
         <div className="modal-buttons">

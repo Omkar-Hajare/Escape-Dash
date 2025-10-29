@@ -13,10 +13,17 @@ const GamePage = ({ difficulty, onGameOver, onGoHome }) => {
     hard: 'HARD'
   };
 
-  const handleGameOver = (finalScore, finalTime) => {
-  console.log('Game Over - Score:', finalScore, 'Coins:', coins, 'Time:', finalTime);
-  onGameOver(finalScore, coins, finalTime);
-};
+  // ✅ FIX: Receive 3 parameters from GameCanvas
+  const handleGameOver = (finalScore, coinsCollected, finalTime) => {
+    console.log('GamePage - Game Over:', { 
+      finalScore, 
+      coinsCollected, 
+      finalTime 
+    });
+    
+    // Pass all three parameters to App.jsx
+    onGameOver(finalScore, coinsCollected, finalTime);
+  };
 
   const handleCoinCollect = () => {
     setCoins(prev => prev + 1);
@@ -60,7 +67,7 @@ const GamePage = ({ difficulty, onGameOver, onGoHome }) => {
             onScoreUpdate={setScore}
             onTimeUpdate={setTime}
             onCoinCollect={handleCoinCollect}
-            onGameOver={onGameOver}
+            onGameOver={handleGameOver}  
           />
         </div>
       </div>
