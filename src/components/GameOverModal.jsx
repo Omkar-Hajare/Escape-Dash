@@ -16,7 +16,7 @@ const GameOverModal = ({ gameData, difficulty, onPlayAgain, onGoHome, currentSta
     hard: 'HARD MODE'
   };
 
-  // ✅ Add debug logging
+  //  debug logging
   console.log('GameOverModal - gameData:', gameData);
 
   return (

@@ -8,7 +8,7 @@ export const checkCollision = (rect1, rect2) => {
          rect1.y + rect1.height > rect2.y;
 };
 
-// Enhanced collision with tolerance for better gameplay
+
 export const checkCollisionWithTolerance = (rect1, rect2, tolerance = 5) => {
   return rect1.x + tolerance < rect2.x + rect2.width - tolerance &&
          rect1.x + rect1.width - tolerance > rect2.x + tolerance &&
@@ -67,7 +67,6 @@ export const shouldSpawnObstacle = (
   // Random spawn based on difficulty
   const spawnChance = settings.obstacleSpawnRate + score * 0.00002;
   if (Math.random() < spawnChance) {
-    // Determine number of obstacles (1-2, never 3)
     const numObstacles = Math.random() < 0.7 ? 1 : 2;
     return {
       spawn: true,

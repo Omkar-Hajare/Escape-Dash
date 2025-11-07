@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { initializeSprites } from '../utils/sprites';
 import { DIFFICULTY_SETTINGS } from '../utils/gameConfig';
+import audioManager from '../utils/audioManager';
 
 const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onCoinCollect, onGameOver }) => {
   const canvasRef = useRef(null);
  const gameStateRef = useRef({
   gameRunning: false,
   score: 0,
-  coinsCollected: 0,  // ✅ ADD THIS
+  coinsCollected: 0,  
   gameSpeed: 2,
   roadOffset: 0,
   backgroundElements: [],
@@ -219,7 +220,7 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onCoinCollect, on
       }
 
       if (checkCollision(gameState.player, gameState.obstacles[i])) {
-        for (let j = 0; j < 15; j++) {
+        for (let j = 0; j < 8; j++) { 
           gameState.particles.push(new Particle(
             gameState.player.x + gameState.player.width / 2,
             gameState.player.y + gameState.player.height / 2,
@@ -245,6 +246,8 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onCoinCollect, on
     }
 
     if (checkCollision(gameState.player, gameState.coins[i])) {
+        audioManager.playCoinSound();
+        audioManager.playCollisionSound();
       for (let j = 0; j < 12; j++) {
         gameState.particles.push(new Particle(
           gameState.coins[i].x + gameState.coins[i].width / 2,
@@ -254,9 +257,9 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onCoinCollect, on
       }
 
       gameState.score += 10;
-      gameState.coinsCollected++;  // ✅ INCREMENT COINS
+      gameState.coinsCollected++;  
       onScoreUpdate(gameState.score);
-      if (onCoinCollect) onCoinCollect();  // Still call this for GamePage display
+      if (onCoinCollect) onCoinCollect();  
       gameState.coins.splice(i, 1);
     }
   }
@@ -377,8 +380,6 @@ const GameCanvas = ({ difficulty, onScoreUpdate, onTimeUpdate, onCoinCollect, on
 
   const settings = DIFFICULTY_SETTINGS[difficulty];
   gameState.gameSpeed += settings.speedIncrement;
-  
-  // Score increases every 10 frames instead of every frame
   gameState.frameCount = (gameState.frameCount || 0) + 1;
   if (gameState.frameCount % 10 === 0) {
     gameState.score++;
@@ -397,11 +398,11 @@ const handleGameOver = () => {
   
   console.log('GameCanvas - Game Over:', {
     score: gameState.score,
-    coins: gameState.coinsCollected,  // ✅ LOG COINS
+    coins: gameState.coinsCollected,  
     time: finalTime
   });
   
-  // ✅ Pass score and time (coins are tracked in GamePage)
+  //  Pass score and time (coins are tracked in GamePage)
   onGameOver(gameState.score, gameState.coinsCollected, finalTime);
 };
   const gameLoop = () => {
@@ -413,6 +414,12 @@ const handleGameOver = () => {
     draw(ctx);
     requestAnimationFrame(gameLoop);
   };
+
+  const initAudio = () => {
+    audioManager.init();
+    document.removeEventListener('click', initAudio);
+  };
+  document.addEventListener('click', initAudio, { once: true });
 
   // Initialize game
  useEffect(() => {

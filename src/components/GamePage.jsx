@@ -13,7 +13,7 @@ const GamePage = ({ difficulty, onGameOver, onGoHome }) => {
     hard: 'HARD'
   };
 
-  // ✅ FIX: Receive 3 parameters from GameCanvas
+  //  Receive 3 parameters from GameCanvas
   const handleGameOver = (finalScore, coinsCollected, finalTime) => {
     console.log('GamePage - Game Over:', { 
       finalScore, 

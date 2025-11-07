@@ -3,7 +3,7 @@ import HomePage from './components/HomePage';
 import GamePage from './components/GamePage';
 import GameOverModal from './components/GameOverModal';
 import NewHighScoreModal from './components/NewHighScoreModal';
-import { gameStatsAPI } from './services/api';
+import { gameStatsAPI, leaderboardAPI } from './services/api';
 import './styles/index.css';
 
 function App() {
@@ -48,19 +48,33 @@ function App() {
     setGameKey(prev => prev + 1);
   };
 
-  // ✅ FIX: Properly handle all three parameters
+  // src/App.jsx - UPDATE handleGameOver
+
   const handleGameOver = async (score, coins, time) => {
     console.log('App - Game Over received:', { score, coins, time });
-    
+
     setGameData({
       score,
       coins,
-      timePlayed: time,  // ✅ Fixed typo
+      timePlayed: time,
       finalScore: score
     });
 
-    // Update stats in database
+    // Update general stats
     const result = await gameStatsAPI.updateStats(difficulty, score, coins);
+
+    //  Refresh stats before showing modal
+    await loadStats();
+
+    // Add to leaderboard
+    const playerName = localStorage.getItem('playerName') || 'Anonymous';
+    const leaderboardResult = await leaderboardAPI.addEntry(
+      playerName,
+      difficulty,
+      score,
+      coins,
+      time
+    );
 
     if (result && result.isNewHighScore) {
       setNewHighScoreValue(score);
@@ -68,9 +82,6 @@ function App() {
     } else {
       setShowGameOver(true);
     }
-
-    // Reload stats
-    await loadStats();
   };
 
   const handleCloseNewHighScore = () => {
