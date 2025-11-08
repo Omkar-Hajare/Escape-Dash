@@ -1,16 +1,57 @@
-# React + Vite
+# 🎮 ESCAPE DASH
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A 2D endless runner game built with the MERN stack featuring real-time gameplay, persistent leaderboards, and multiple difficulty levels.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 About
 
-## React Compiler
+Escape Dash is a browser-based endless runner game where players navigate through three lanes, avoiding obstacles and collecting coins while competing on global leaderboards. The game demonstrates full-stack development with real-time canvas rendering at 60 FPS and persistent data storage using MongoDB.
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Gameplay Features
+- 🎮 **Real-time 2D Gameplay** - 60 FPS canvas-based game engine
+- 🏃 **Three-Lane Movement** - Navigate between lanes using keyboard controls
+- 🚧 **Dynamic Obstacles** - Progressively challenging obstacle spawning
+- 🪙 **Coin Collection System** - Collect coins for bonus points
+- 💥 **Particle Effects** - Visual feedback for collisions and collections
+- 🎚️ **Three Difficulty Levels** - Simple, Moderate, and Hard modes
+- ⏱️ **Real-time Statistics** - Live score, coins, and time tracking
+
+### Technical Features
+- 🏆 **Global Leaderboard** - Player rankings with persistent storage
+- 📊 **Statistics Tracking** - High scores and total coins per difficulty
+- 👤 **Player Profiles** - Individual score history and rankings
+- 🔊 **Audio System** - Web Audio API with sound effects
+
+- 🎨 **Procedural Graphics** - All sprites generated programmatically
+- ⚡ **Optimized Performance** - Efficient state management with React hooks
+
+---
+
+## 🛠️ Technology Stack
+
+**Frontend:**  
+React 18.x • HTML5 Canvas • CSS3 • JavaScript ES6+ • Vite
+
+**Backend:**  
+Node.js • Express.js • MongoDB • Mongoose
+
+**Tools:**  
+Git • npm • MongoDB Compass • VS Code
+
+---
+
+## 🎯 Game Controls
+
+**Keyboard:**
+- `←` or `A` - Move left
+- `→` or `D` - Move right
+- `🔊` - Mute/Unmute sounds
+
+---
+
+**Made using the MERN Stack**
